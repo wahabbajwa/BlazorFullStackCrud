@@ -1,0 +1,51 @@
+﻿@page "/student"
+@inject IStudentService SuperHeroService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Super Heroes</PageTitle>
+
+<h3>Student</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Hero Name</th>
+            <th>Comic</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in StudentService.Student)
+        {
+            <tr>
+                <td>@student.FirstName</td>
+                <td>@student.LastName</td>
+                <td>@student.Course</td>
+                <td>@student.Department.Name</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="(() => ShowStudent(student.Id))"><i class="oi oi-pencil"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button class="btn btn-primary" @onclick="CreateNewStudent">Create New student</button>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await StudentService.GetStudent();
+    }
+
+    void ShowStudent(int id)
+    {
+        NavigationManager.NavigateTo($"studentsingle/{id}");
+    }
+
+    void CreateNewStudent()
+    {
+        NavigationManager.NavigateTo("/studentsingle");
+    }
+}
